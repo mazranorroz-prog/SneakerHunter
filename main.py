@@ -26,9 +26,9 @@ app.mount(
 def dashboard(request: Request):
 
     return templates.TemplateResponse(
-        "dashboard.html",
-        {
-            "request": request,
+        request=request,
+        name="dashboard.html",
+        context={
             "targets": TARGETS
         }
     )
@@ -38,10 +38,6 @@ def dashboard(request: Request):
 def status():
 
     return {
-
         "status": "online",
-
-        "target":
-        TARGETS[0]["name"]
-
+        "target": TARGETS[0]["name"]
     }
