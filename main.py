@@ -1,5 +1,8 @@
-from fastapi import FastAPI
-from config import PROJECT_NAME
+from fastapi import FastAPI, Request
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+
+from config import PROJECT_NAME, TARGETS
 
 
 app = FastAPI(
@@ -7,18 +10,38 @@ app = FastAPI(
 )
 
 
+templates = Jinja2Templates(
+    directory="templates"
+)
+
+
+app.mount(
+    "/static",
+    StaticFiles(directory="static"),
+    name="static"
+)
+
+
 @app.get("/")
-def home():
+def dashboard(request: Request):
+
+    return templates.TemplateResponse(
+        "dashboard.html",
+        {
+            "request": request,
+            "targets": TARGETS
+        }
+    )
+
+
+@app.get("/api/status")
+def status():
 
     return {
+
         "status": "online",
-        "message": "Sneaker Hunter is running"
+
+        "target":
+        TARGETS[0]["name"]
+
     }
-
-
-@app.get("/targets")
-def targets():
-
-    from config import TARGETS
-
-    return TARGETS
