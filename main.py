@@ -1,43 +1,16 @@
-from fastapi import FastAPI, Request
-from fastapi.templating import Jinja2Templates
-from fastapi.staticfiles import StaticFiles
+from fastapi import FastAPI
 
-from config import PROJECT_NAME, TARGETS
-
+from app.database.connection import engine
 
 app = FastAPI(
-    title=PROJECT_NAME
-)
-
-
-templates = Jinja2Templates(
-    directory="templates"
-)
-
-
-app.mount(
-    "/static",
-    StaticFiles(directory="static"),
-    name="static"
+    title="SneakerHunter API",
+    version="1.0.0"
 )
 
 
 @app.get("/")
-def dashboard(request: Request):
-
-    return templates.TemplateResponse(
-        request=request,
-        name="dashboard.html",
-        context={
-            "targets": TARGETS
-        }
-    )
-
-
-@app.get("/api/status")
-def status():
-
+def home():
     return {
-        "status": "online",
-        "target": TARGETS[0]["name"]
+        "message": "SneakerHunter API is running",
+        "database": engine.url.render_as_string(hide_password=True)
     }
