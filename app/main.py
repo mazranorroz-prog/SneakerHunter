@@ -10,4 +10,4 @@ app = FastAPI(
 def home():
     return {
         "message": "SneakerHunter API running"
-    }
+    }  
