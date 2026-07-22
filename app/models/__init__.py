@@ -1,1 +1,1 @@
-from .sneaker import Sneaker
+from app.models.sneaker import Sneaker
